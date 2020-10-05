@@ -1,8 +1,7 @@
-const vscode = require('vscode');
-
-const path = require('path'),
-      fs = require('fs'),
-      { EOL } = require('os');
+const   vscode = require('vscode');
+        path = require('path'),
+        fs = require('fs'),
+        { EOL } = require('os');
 
 const findProjectDir = (fileName) => {
     const dir = path.dirname(fileName);
@@ -10,11 +9,13 @@ const findProjectDir = (fileName) => {
     if (fs.existsSync(dir + '/package.json')) {
         return dir;
     } else {
-        if (dir === '/') {
-            return null;
-        }
-        return findProjectDir(dir);
+        return dir === '/' ? null : findProjectDir(dir);
     }
+}
+
+const isDotenvInDeps = (projectDir) => {
+    const { dependencies, devDependencies } = require(`${projectDir}/package.json`);
+    return dependencies && dependencies.dotenv || devDependencies && devDependencies.dotenv;
 }
 
 const provider = {
@@ -29,27 +30,19 @@ const provider = {
         console.log('we are there');
 
         const projectDir = findProjectDir(document.fileName);
+        let envvars = Object.entries(process.env);
 
-        const package = require(`${projectDir}/package.json`);
-
-        const dotenvIsThere = package.dependencies.dotenv || package.devDependencies.dotenv;
-
-        const additionals = [];
-        if (dotenvIsThere) {
+        if (projectDir && isDotenvInDeps(projectDir)) {
             const fileContent = fs.readFileSync(`${projectDir}/.env`, { encoding: 'utf8' });
-            fileContent.split(EOL).forEach(envvarLitteral => additionals.push(envvarLitteral.split('=')));
+            fileContent.split(EOL).forEach(envvarLitteral => envvars.push(envvarLitteral.split('=')));
         }
-
-        const envvars = [...additionals, ...Object.entries(process.env)];
         
-        const completions = envvars.map(envvar => {
+        return envvars.map(envvar => {
             const completion = new vscode.CompletionItem(envvar[0], vscode.CompletionItemKind.Variable);
             completion.documentation = envvar[1];
 
             return completion;
         });
-
-        return completions;
     }
 }
 
