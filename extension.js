@@ -14,7 +14,9 @@ function activate(context) {
 
 	console.log('"env-autocomplete" is active!');
 
-	const providerDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'javascript'}, envvarProvider, '.');
+	const javascriptProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'javascript'}, envvarProvider, '.');
+	const typescriptProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'typescript'}, envvarProvider, '.');
+
 
 	context.subscriptions.push(providerDisposable);
 }
