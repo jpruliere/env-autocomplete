@@ -15,7 +15,7 @@ const findProjectDir = (fileName) => {
 
 const isDotenvInDeps = (projectDir) => {
     const { dependencies, devDependencies } = require(`${projectDir}/package.json`);
-    return dependencies && dependencies.dotenv || devDependencies && devDependencies.dotenv;
+    return dependencies && (dependencies.dotenv || dependencies.next) || devDependencies && devDependencies.dotenv;
 }
 
 const provider = {
