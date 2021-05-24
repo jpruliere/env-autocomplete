@@ -34,7 +34,11 @@ const provider = {
 
         if (projectDir && isDotenvInDeps(projectDir)) {
             const fileContent = fs.readFileSync(`${projectDir}/.env`, { encoding: 'utf8' });
-            fileContent.split(EOL).forEach(envvarLitteral => envvars.push(envvarLitteral.split('=')));
+            fileContent
+                .split(EOL)
+                // filter out comments
+                .filter(line => !line.trim().startsWith('#'))
+                .forEach(envvarLitteral => envvars.push(envvarLitteral.trim().split('=')));
         }
         
         return envvars.map(envvar => {
