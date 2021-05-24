@@ -2,7 +2,7 @@
 	"name": "env-autocomplete",
 	"displayName": "env-autocomplete",
 	"description": "Searches your repo for a .env file, parses it and autocompletes process.env mentions with every available variable",
-	"version": "1.0.0",
+	"version": "1.2.0",
 	"publisher": "jpruliere",
 	"repository": {
 		"type": "git",
