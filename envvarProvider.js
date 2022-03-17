@@ -37,7 +37,7 @@ const provider = {
             fileContent
                 .split(EOL)
                 // filter out comments
-                .filter(line => !line.trim().startsWith('#'))
+                .filter(line => !line.trim().startsWith('#') && line.trim().length > 0)
                 .forEach(envvarLitteral => envvars.push(envvarLitteral.trim().split('=')));
         }
         
