@@ -36,10 +36,8 @@ const provider = {
         if (projectDir && isDotenvInDeps(projectDir)) {
             const files = glob.sync(`${projectDir}/.env.*`);
             files.push(`${projectDir}/.env`);
-            console.log(files);
 
             files.forEach(file => {
-                console.log(file);
                 let fileContent;
                 try {
                     fileContent = fs.readFileSync(file, { encoding: 'utf8' });
