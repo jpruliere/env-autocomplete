@@ -13,12 +13,6 @@ const findProjectDir = (fileName) => {
     }
 }
 
-const isDotenvInDeps = (projectDir) => {
-    const { dependencies, devDependencies } = require(`${projectDir}/package.json`);
-    return dependencies && (dependencies.dotenv || dependencies.next || dependencies['dotenv-flow'])
-        || devDependencies && (devDependencies.dotenv || devDependencies['dotenv-flow']);
-}
-
 const provider = {
     provideCompletionItems(document, position) {
         console.debug('started providing');
@@ -33,7 +27,7 @@ const provider = {
         const projectDir = findProjectDir(document.fileName);
         let envvars = Object.entries(process.env);
 
-        if (projectDir && isDotenvInDeps(projectDir)) {
+        if (projectDir) {
             const fileContent = fs.readFileSync(`${projectDir}/.env`, { encoding: 'utf8' });
             fileContent
                 .split(EOL)
