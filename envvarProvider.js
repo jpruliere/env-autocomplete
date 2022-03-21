@@ -39,12 +39,12 @@ const provider = {
                 .split(EOL)
                 // filter out comments
                 .filter(line => !line.trim().startsWith('#'))
-                .forEach(envvarLitteral => envvars.push(envvarLitteral.trim().split('=')));
+                .forEach(envvarLitteral => envvars.push(envvarLitteral.split('=')));
         }
         
         return envvars.map(envvar => {
-            const completion = new vscode.CompletionItem(envvar[0], vscode.CompletionItemKind.Variable);
-            completion.documentation = envvar[1];
+            const completion = new vscode.CompletionItem(envvar[0].trim(), vscode.CompletionItemKind.Variable);
+            completion.documentation = envvar[1].trim();
 
             return completion;
         });
