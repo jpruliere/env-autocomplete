@@ -16,9 +16,11 @@ function activate(context) {
 
 	const javascriptProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'javascript'}, envvarProvider, '.');
 	const typescriptProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'typescript'}, envvarProvider, '.');
+	const javascriptreactProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'javascriptreact'}, envvarProvider, '.');
+	const typescriptreactProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'typescriptreact'}, envvarProvider, '.');
 
 
-	context.subscriptions.push(providerDisposable);
+	context.subscriptions.push(javascriptProviderDisposable, typescriptProviderDisposable, javascriptreactProviderDisposable, typescriptreactProviderDisposable);
 }
 exports.activate = activate;
 
