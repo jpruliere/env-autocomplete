@@ -1,7 +1,8 @@
-const   vscode = require('vscode');
+const   vscode = require('vscode'),
         path = require('path'),
         fs = require('fs'),
-        { EOL } = require('os');
+        { EOL } = require('os'),
+        { glob } = require('glob');
 
 const findProjectDir = (fileName) => {
     const dir = path.dirname(fileName);
@@ -33,12 +34,24 @@ const provider = {
         let envvars = Object.entries(process.env);
 
         if (projectDir && isDotenvInDeps(projectDir)) {
-            const fileContent = fs.readFileSync(`${projectDir}/.env`, { encoding: 'utf8' });
-            fileContent
-                .split(EOL)
-                // filter out comments
-                .filter(line => !line.trim().startsWith('#') && line.trim().length > 0)
-                .forEach(envvarLitteral => envvars.push(envvarLitteral.split('=')));
+            const files = glob.sync(`${projectDir}/.env.*`);
+            files.push(`${projectDir}/.env`);
+
+            files.forEach(file => {
+                let fileContent;
+                try {
+                    fileContent = fs.readFileSync(file, { encoding: 'utf8' });
+                } catch (err) {
+                    // this is usually because the file doesn't exist,
+                    // which is often the case with the hardcoded .env file
+                    return; // out of forEach callback
+                }
+                fileContent
+                    .split(EOL)
+                    // filter out comments
+                    .filter(line => !line.trim().startsWith('#')) && line.trim().length > 0)
+                    .forEach(envvarLitteral => envvars.push(envvarLitteral.split('=')));
+            });
         }
         
         return envvars.map(envvar => {
