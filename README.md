@@ -1,14 +1,19 @@
 # env-autocomplete
 
-This extension provides auto-completion to any `process.env` mentions inside a JS file. It is _dotenv aware_, which means it will add any environment variables you declared in a `.env` file at the root of your project.
+This extension provides auto-completion to any `process.env` mentions inside a JS/TS file, from environment variables declared in `.env.*` files at the root of your project.
 
-## Features
+## Install
 
-**Project manifest detection** : looks for a `package.json` in current or any parent directory and parses it, looking for [dotenv](https://www.npmjs.com/package/dotenv) in your dependencies.
+### From the Extension Marketplace
 
-**.env parsing** : parses your favorite flat file to add any variable you wrote there
+Just search for `jpruliere.env-autocomplete` in the extensions panel, and click install.
 
-**Minimal OS dependency** : uses VSCode own Node environment to access environment variables, ensuring maximal compatibility.
+### From Source
+
+1. Install `vsce` with `npm install -g vsce`
+2. Clone this repo with `git clone https://github.com/jpruliere/env-autocomplete`
+3. Run `vsce package` - this will generate a file ending in .vsix
+4. Drag the generated file into the Extensions panel in VSCode (or run `code --install-extension <file-name>.vsix`)
 
 ## Requirements
 
@@ -16,6 +21,4 @@ Any version of VSCode should do the trick. Let me know if anything goes south wh
 
 ## Release Notes
 
-### 1.0.0
-
-First try, _works fine on my computer_ :rofl:
+See [CHANGELOG.md](CHANGELOG.md)
