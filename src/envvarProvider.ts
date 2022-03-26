@@ -1,10 +1,10 @@
-const   vscode = require('vscode'),
-        path = require('path'),
-        fs = require('fs'),
-        { EOL } = require('os'),
-        { glob } = require('glob');
+import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
+import { EOL } from 'os';
+import { glob } from 'glob';
 
-const findProjectDir = (fileName) => {
+const findProjectDir = (fileName: string): string | null => {
     const dir = path.dirname(fileName);
 
     if (fs.existsSync(dir + '/package.json')) {
@@ -15,10 +15,10 @@ const findProjectDir = (fileName) => {
 }
 
 const provider = {
-    provideCompletionItems(document, position) {
+    provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position) => {
         console.debug('started providing');
 
-        const linePrefix = document.lineAt(position).text.substr(0, position.character);
+        const linePrefix = document.lineAt(position).text.slice(0, position.character);
         if (!linePrefix.endsWith('process.env.')) {
             return undefined;
         }
@@ -44,18 +44,23 @@ const provider = {
                 fileContent
                     .split(EOL)
                     // filter out comments
-                    .filter(line => !line.trim().startsWith('#') && line.trim().length > 0)
-                    .forEach(envvarLitteral => envvars.push(envvarLitteral.split('=')));
+                    .filter(line => !line.trim().startsWith('#'))
+                    .forEach(envvarLitteral => {
+                        const splitted = envvarLitteral.split('=');
+                        if (splitted.length > 1) {
+                            envvars.push([splitted[0], splitted[1]]);
+                        }
+                    });
             });
         }
         
         return envvars.map(envvar => {
             const completion = new vscode.CompletionItem(envvar[0].trim(), vscode.CompletionItemKind.Variable);
-            completion.documentation = envvar[1].trim();
+            completion.documentation = envvar[1]?.trim();
 
             return completion;
         });
     }
 }
 
-module.exports = provider;
+export default provider;
