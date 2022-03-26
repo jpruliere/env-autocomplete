@@ -4,12 +4,6 @@ import * as fs from 'fs';
 import { EOL } from 'os';
 import { glob } from 'glob';
 
-// const   vscode = require('vscode'),
-//         path = require('path'),
-//         fs = require('fs'),
-//         { EOL } = require('os'),
-//         { glob } = require('glob');
-
 const findProjectDir = (fileName: string): string | null => {
     const dir = path.dirname(fileName);
 
@@ -24,8 +18,7 @@ const provider = {
     provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position) => {
         console.debug('started providing');
 
-        // TODO: substr is deprecated
-        const linePrefix = document.lineAt(position).text.substr(0, position.character);
+        const linePrefix = document.lineAt(position).text.slice(0, position.character);
         if (!linePrefix.endsWith('process.env.')) {
             return undefined;
         }
