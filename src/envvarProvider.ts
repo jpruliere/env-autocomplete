@@ -29,8 +29,7 @@ const provider = {
         let envvars = Object.entries(process.env);
 
         if (projectDir) {
-            const files = glob.sync(`${projectDir}/.env.*`);
-            files.push(`${projectDir}/.env`);
+            const files = glob.sync(`${projectDir}/**/.env?(.*)`);
 
             files.forEach(file => {
                 let fileContent;
@@ -38,7 +37,8 @@ const provider = {
                     fileContent = fs.readFileSync(file, { encoding: 'utf8' });
                 } catch (err) {
                     // this is usually because the file doesn't exist,
-                    // which is often the case with the hardcoded .env file
+                    // which may occur if the file is deleted between
+                    // globbing and here.
                     return; // out of forEach callback
                 }
                 fileContent
