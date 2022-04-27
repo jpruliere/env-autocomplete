@@ -8,15 +8,7 @@ import envvarProvider from './envvarProvider';
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('"env-autocomplete" is active!');
-
-	const javascriptProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'javascript'}, envvarProvider, '.');
-	const typescriptProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'typescript'}, envvarProvider, '.');
-	const javascriptreactProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'javascriptreact'}, envvarProvider, '.');
-	const typescriptreactProviderDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'typescriptreact'}, envvarProvider, '.');
-
-
-	context.subscriptions.push(javascriptProviderDisposable, typescriptProviderDisposable, javascriptreactProviderDisposable, typescriptreactProviderDisposable);
+	vscode.window.showWarningMessage("env-autocomplete is deprecated, please use maxcutlyp's extension instead (link in the readme)");
 }
 
 // this method is called when your extension is deactivated

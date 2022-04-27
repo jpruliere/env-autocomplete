@@ -1,5 +1,8 @@
 # Change Log
 
+## v1.4.1
+- Deprecated this extension
+
 ## v1.4.0
 - Migrated to TypeScript
 
